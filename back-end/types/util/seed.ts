@@ -1,5 +1,5 @@
 import { PrismaClient } from '@prisma/client';
-
+import bcrypt from 'bcrypt';
 const prisma = new PrismaClient();
 
 const main = async () => {
@@ -8,11 +8,13 @@ const main = async () => {
   await prisma.vehicle.deleteMany();
   await prisma.user.deleteMany();
 
+
+
   const user2 = await prisma.user.create({
     data: {
       email: 'user2@example.com',
       name: 'John Doe',
-      password: 'password123',
+      password: await bcrypt.hash('password123', 12),
       phoneNumber: 123456789,
     },
   });
@@ -40,7 +42,7 @@ const main = async () => {
     data: {
       email: 'user1@example.com',
       name: 'John Doe',
-      password: 'password123',
+      password: await bcrypt.hash('password123', 12),
       phoneNumber: 123456789,
     },
   }); 

@@ -91,6 +91,7 @@ import Header from "@/components/header";
 import VehiclesOverviewTable from "@/components/vehicles/VehiclesOverviewTable";
 import VehicleService from "@/services/VehicleService";
 import AddCarModal from "@/components/vehicles/addCarModal";
+import { ca } from "date-fns/locale";
 
 const userVehicles = () => {
     const [user, setUser] = useState<User | null>(null);
@@ -101,27 +102,39 @@ const userVehicles = () => {
 
     const getUserById = async () => {
         try {
-            const [userResponse] = await Promise.all([UserService.getUserById(userId as string)]);
-            const [user] = await Promise.all([userResponse.json()]);
+            const userResponse = await UserService.getUserById(userId as string);
+            // const [user] = await Promise.all([userResponse.json()]);
+            const user = await userResponse.json;
             setUser(user);
         } catch (error) {
             console.error("Failed to get user:", error);
         }
     }
-    // setUserVehicles(user?.listOfCarsForSelling || []);
+    
+    const fetchUserVehicles = async () => {
+        try{
+            const response = await VehicleService.getVehiclesBySeller(userId as string);
+            const vehicles = await response.json();
+            setUserVehicles(vehicles);
+            // console.log("vehicles "+ vehicles);
+            
+        } catch (error) {
+            console.error("Failed to fetch user vehicles:", error);
+        }
+    };
+    useEffect(() => {
+        if (router.isReady && userId) {
+            getUserById();
+        }
+        // console.log("id " +userId);
+        
+    }, [router.isReady, userId]);
 
     useEffect(() => {
         if (userId) {
-            getUserById();
+            fetchUserVehicles();
         }
-    }, [router.isReady, userId])
-    useEffect(() => {
-        if (user) {
-            setUserVehicles(user.listOfCarsForSelling || []);
-            console.log(user.listOfCarsForSelling);
-
-        }
-    }, [user]);
+    }, [userId]);
 
 
 
@@ -132,7 +145,7 @@ const userVehicles = () => {
                 const addedCar = await response.json();
                 setUserVehicles((prevVehicles) => [...prevVehicles, addedCar]);
                 console.log(addedCar);
-                
+
             }
         } catch (error) {
             console.error("Failed to add car:", error);
@@ -169,9 +182,7 @@ const userVehicles = () => {
 
                     <section>
                         {userVehicles && (<VehiclesOverviewTable vehicles={userVehicles}
-                            onVehiclesChange={function (): void {
-                                throw new Error("Function not implemented.");
-                            }}                            // onVehiclesChange={userVehicles} 
+                            onVehiclesChange={fetchUserVehicles}                            // onVehiclesChange={userVehicles} 
                         />)}
                     </section>
                 </div>

@@ -12,12 +12,12 @@ export type Vehicle = {
     mileage:number;
 }
 export type User = {
-    id: number;
-    email: string;
-    name: string;
-    password: string;
-    phoneNumber: number;
-    listOfCarsForSelling: Vehicle[];
+    id?: number;
+    email?: string;
+    name?: string;
+    password?: string;
+    phoneNumber?: number;
+    listOfCarsForSelling?: Vehicle[];
 }
 export type UserLogIn = {
     email: string;

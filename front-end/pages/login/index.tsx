@@ -5,6 +5,8 @@ import Head from "next/head"
 import { UserLogIn } from "@/types"
 import { use, useState } from "react"
 import Link from "next/link"
+import { ro } from "date-fns/locale"
+import router from "next/router"
 
 
 const Login: React.FC = () => {
@@ -20,6 +22,13 @@ const Login: React.FC = () => {
         password
     };
     console.log(user);
+
+    sessionStorage.setItem('loggedInUser', email)
+    console.log('logged in user ' + sessionStorage.getItem('loggedInUser'));
+    
+    setTimeout(()=>{
+        router.push("/vehicles")
+    }, 1000)
 };
 
 

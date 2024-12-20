@@ -1,4 +1,4 @@
-import { User } from "@prisma/client";
+import { User } from "./user"; // Assuming you have a custom User class with the required methods
 import { Vehicle } from "./vehicle";
 
 export class Car extends Vehicle {

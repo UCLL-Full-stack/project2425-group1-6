@@ -8,7 +8,7 @@ import vehicleDb from "../repository/vehicle.db";
 import userService from "./user.service";
 
 
-const addVehicle = async (input: VehicleInput) => {
+const addVehicle = async (input: Vehicle) => {
 
     if (!input.manufacturer ||
         !input.model_name ||
@@ -25,15 +25,21 @@ const addVehicle = async (input: VehicleInput) => {
         throw new Error('All vehicle properties must be defined');
     }
     const seller = await userService.getUserById(Number(input.seller))
-    
+
     return await vehicleDB.addVehicle(input);
 };
 
 
+
+
 const getVehicleById = async (id: number) => {
-    const vehicle = await vehicleDb.getVehicleByID({ id })
-    if(!vehicle) {throw new Error(`Vehicle with id ${ id } does not exist`)}
-    return vehicle
+    try {
+        const vehicle = await vehicleDB.getVehicleByID({ id });
+        return vehicle;
+    } catch (error) {
+        console.error('Error fetching vehicle by ID:', error);
+        throw error;
+    }
 };
 
 
@@ -163,16 +169,8 @@ const getAllCars = async () => {
         throw error;
     }
 };
+const getAllVehicles = async (): Promise<Car[]> => vehicleDB.getAllVehicles();
 
-const getAllVehicles = async () => {
-    try {
-        const vehicles = await vehicleDB.getAllvehicles();
-        return vehicles;
-    } catch (error) {
-        console.error('Error fetching vehicles:', error);
-        throw error;
-    }
-};
 
 const getAllMotorcycles = async () => {
     try {
@@ -184,10 +182,10 @@ const getAllMotorcycles = async () => {
     }
 };
 
-// const getVehicleBySeller = async (sellerId: number) => {
-//     const vehicles = await vehicleDB.getVehicleBySeller(sellerId);
-//     return vehicles;
-// }
+const getVehicleBySeller = async (sellerId: number) => {
+    const vehicles = await vehicleDB.getVehicleBySeller({ sellerId });
+    return vehicles;
+}
 
 export default {
     getAllCars,
@@ -198,5 +196,5 @@ export default {
     // editVehicle,
     // getFilteredVehicles,
     getVehicleById,
-    // getVehicleBySeller
+    getVehicleBySeller
 }

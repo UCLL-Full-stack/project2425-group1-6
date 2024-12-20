@@ -33,5 +33,9 @@ type VehicleInput = {
     seller?: UserInput;
 };
 
+type AuthenticationResponse = {
+    token : string;
+    email: string;
+}
 
-export { UserInput, VehicleInput }
+export { UserInput, VehicleInput,AuthenticationResponse }

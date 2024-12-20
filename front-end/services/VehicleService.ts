@@ -9,16 +9,6 @@ const getAllVehicles = ()=>{
     })
 }
 
-// const getVehicleByOwner = async (sellerId: string) => {
-//     const response = await fetch(process.env.NEXT_PUBLIC_API_URL + `/vehicles/owner/${sellerId}`, {
-//         method: "GET",
-//         headers: {
-//             "Content-Type": "application/json",
-//         }
-//     })
-//     return await response.json()
-// }
-
 const getVehicleById = async (vehicleId: number): Promise<Vehicle> => {
     const  vehicle = await fetch(process.env.NEXT_PUBLIC_API_URL + `/vehicles/${vehicleId}`,{
         method: 'GET',
@@ -58,12 +48,23 @@ const editVehicle = async (vehicleId: number, input: Vehicle)=>{
     })
 }
 
+const getVehiclesBySeller = async (sellerId: string) => {
+    return fetch(process.env.NEXT_PUBLIC_API_URL + `/vehicles/seller/${sellerId}`, {
+        method: "GET",
+        headers: {
+            "Content-Type": "application/json",
+        }
+    })
+    
+}
+
 const VehicleService = {
     getAllVehicles,
     addVehicle,
     deleteVehicle,
     editVehicle,
-    getVehicleById
+    getVehicleById,
+    getVehiclesBySeller
 }
 
 export default VehicleService;

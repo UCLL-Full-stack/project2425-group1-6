@@ -10,7 +10,7 @@ export class User {
     readonly id?: number | undefined;
     readonly email: string;
     readonly name: string;
-    private password: string;
+    readonly password: string;
     readonly phoneNumber: number;
     // private listOfCarsForSelling: Vehicle[];
     // private listOfFavoriteCars: Vehicle[]
@@ -25,6 +25,8 @@ export class User {
         // listOfFavoriteCars: Vehicle[];
     }) {
 
+        this.validate(user)
+
         this.id = user.id;
         this.email = user.email;
         this.name = user.name;
@@ -34,26 +36,40 @@ export class User {
         // this.listOfFavoriteCars = user.listOfFavoriteCars || [];
     }
 
-    async hashPassword(): Promise<void> {
-        this.password = await bcrypt.hash(this.password, 10);
+    validate(user: { email: string, name: string, password: string, phoneNumber: number }) {
+        if (!user.email?.trim()) {
+            throw new Error('Email is required');
+        }
+        if (!user.name?.trim()) {
+            throw new Error('Name is required');
+        }
+        if (!user.password) {
+            throw new Error('Password is required');
+        }
+        if (!user.phoneNumber) {
+            throw new Error('Phone number is required');
+        }
     }
+        // async hashPassword(): Promise<void> {
+        //     this.password = await bcrypt.hash(this.password, 10);
+        // }
 
-    async validatePassword(inputPassword: string): Promise<boolean> {
-        return bcrypt.compare(inputPassword, this.password);
-    }
+        // async validatePassword(inputPassword: string): Promise<boolean> {
+        //     return bcrypt.compare(inputPassword, this.password);
+        // }
 
 
-    getId(): number | undefined {
-        return this.id
-    }
+        getId(): number | undefined {
+            return this.id
+        }
 
-    getEmail(): string {
-        return this.email
-    }
+        getEmail(): string {
+            return this.email
+        }
 
-    getName(): string {
-        return this.name
-    }
+        getName(): string {
+            return this.name
+        }
     // getlistOfCarsForSelling(): Vehicle[] {
     //     return this.listOfCarsForSelling;
     // }
@@ -66,9 +82,9 @@ export class User {
     // }
 
     static from({
-        id, email, name, password, phoneNumber, 
-        // listOfCarsForSelling,
-    }: UserPrisma) {
+            id, email, name, password, phoneNumber,
+            // listOfCarsForSelling,
+        }: UserPrisma) {
         return new User({
             id,
             email,

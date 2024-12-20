@@ -36,9 +36,9 @@ model Vehicle {
   createdAt         DateTime
   updatedAt         DateTime
   sellerId          Int?
-  seller            User?   @relation( fields: [sellerId], references: [id])
+  seller            User?   @relation(fields: [sellerId], references: [id])
 
-  // Back-relation to FavouriteCars
+  // Back-relation to FavouriteCars (Removed onDelete: Cascade)
   favouriteByUsers  FavouriteCars[] 
 
   car               Car?      
@@ -64,7 +64,7 @@ model Car {
   updatedAt         DateTime
 
   sellerId          Int?
-  seller            User?   @relation( fields: [sellerId], references: [id])
+  seller            User?   @relation(fields: [sellerId], references: [id])
 }
 
 model Motorcycle {
@@ -86,7 +86,7 @@ model Motorcycle {
   updatedAt         DateTime
 
   sellerId          Int?
-  seller            User?   @relation (fields: [sellerId], references: [id])
+  seller            User?   @relation(fields: [sellerId], references: [id])
 }
 
 model FavouriteCars {
@@ -94,7 +94,7 @@ model FavouriteCars {
   vehicleId Int
 
   user      User    @relation(fields: [userId], references: [id])
-  vehicle   Vehicle @relation(fields: [vehicleId], references: [id])
+  vehicle   Vehicle @relation(fields: [vehicleId], references: [id], onDelete: Cascade) // Added onDelete: Cascade here
 
   @@id([userId, vehicleId])
 }

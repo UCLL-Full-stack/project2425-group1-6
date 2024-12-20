@@ -19,29 +19,28 @@ const getUserById = async (id: number) => {
     return user;
 }
 
-const addFavouriteCar = async (userId: number, vehicleId: number) => {
+// const addFavouriteCar = async (userId: number, vehicleId: number) => {
 
-  const user = await getUserById(userId)
-  const vehicle = await vehicleService.getVehicleById(vehicleId)
+//   const user = await getUserById(userId)
+//   const vehicle = await vehicleService.getVehicleById(vehicleId)
 
-  return await userDb.addFavouriteCar(userId, vehicleId)
-};
+//   return await userDb.addFavouriteCar(userId, vehicleId)
+// };
 
-const getFavouriteCars = async (userId: number) => {
+// const getFavouriteCars = async (userId: number) => {
 
-  const user = await getUserById(userId)
+//   const user = await getUserById(userId)
 
-  return await userDb.getFavouriteCars(userId)
-};
+//   return await userDb.getFavouriteCars(userId)
+// };
 
-const removeFavouriteCar = async (userId: number, vehicleId: number) => {
+// const removeFavouriteCar = async (userId: number, vehicleId: number) => {
 
-  const user = await getUserById(userId)
-  const vehicle = await vehicleService.getVehicleById(vehicleId)
+//   const user = await getUserById(userId)
+//   const vehicle = await vehicleService.getVehicleById(vehicleId)
 
-  return await userDb.removeFavouriteCar(userId, vehicleId)
-};
-
+//   return await userDb.removeFavouriteCar(userId, vehicleId)
+// };
 
 
 const getUserByEmail = async ({ email }: { email: string }) => {
@@ -84,7 +83,7 @@ const authenticate = async ({ email, password }: UserInput): Promise<Authenticat
         throw new Error("Password is required")
     }
     const user = await getUserByEmail({ email });
-    
+
     const isValidPassword = await bcrypt.compare(password, user.password);
     if (!isValidPassword) {
         throw new Error("Invalid credentials.");
@@ -98,4 +97,13 @@ const authenticate = async ({ email, password }: UserInput): Promise<Authenticat
 
 
 
-export default { addFavouriteCar, removeFavouriteCar, getFavouriteCars, getAllUsers, getUserById, getUserByEmail, createUser, authenticate };
+export default {
+    // addFavouriteCar,
+    // removeFavouriteCar,
+    // etFavouriteCars,
+    getAllUsers,
+    getUserById,
+    getUserByEmail,
+    createUser,
+    authenticate
+};

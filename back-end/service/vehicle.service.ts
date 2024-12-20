@@ -19,12 +19,16 @@ const addVehicle = async (input: Vehicle) => {
         !input.year ||
         input.mileage == null ||
         !input.vehicleType ||
-        !input.engineCapacity ||
-        !input.seller) {
+        !input.engineCapacity) {
 
         throw new Error('All vehicle properties must be defined');
     }
-    const seller = await userService.getUserById(Number(input.seller))
+    const seller = await userService.getUserById(Number(input.seller.id));
+    
+    
+    if (!seller) {
+        throw new Error('Seller does not exist');
+    }
 
     return await vehicleDB.addVehicle(input);
 };

@@ -2,6 +2,7 @@ import express,{ Request, Response, Router } from 'express';
 import vehicleService from "../service/vehicle.service";
 import { ca } from 'date-fns/locale';
 import { Vehicle } from '../domain/model/vehicle';
+import userService from '../service/user.service';
 
 const vehicleRouter = express.Router();
 
@@ -52,8 +53,10 @@ vehicleRouter.get('/cars', async (req: Request, res: Response) => {
 
 vehicleRouter.post('/:sellerId', async (req: Request, res: Response) => {
     try{
-        const vehicle = await vehicleService.addVehicle(req.body);
-        res.status(201).json(vehicle);
+        const seller = userService.getUserById(Number(req.params.sellerId));
+        const vehicleData = { ...req.body };
+        const vehicle = await vehicleService.addVehicle(vehicleData);
+        res.status(200).json(vehicle);
     }catch(error){
 
         if (error instanceof Error) {

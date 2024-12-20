@@ -154,6 +154,7 @@ const userVehicles = () => {
 
     const handleAddCarClick = () => {
         setIsModalOpen(true);
+
     };
 
     const handleCloseModal = () => {

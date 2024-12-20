@@ -20,62 +20,62 @@ userRouter.get('/id/:id', async (req: Request, res: Response) => {
   try {
     const user = await userService.getUserById(Number(req.params.id));
     res.status(200).json(user);
-  }catch(error){
+  } catch (error) {
     if (error instanceof Error) {
       res.status(400).json({ status: 'error', message: error.message });
-  } else {
+    } else {
       console.error('Unexpected error:', error);
       res.status(500).json({ status: 'error', message: 'Unexpected error occurred' });
-  }
+    }
   }
 })
 
-userRouter.post('/:userId/favourites', async (req: Request, res: Response) => {
-  const { userId } = req.params;
-  const { vehicleId } = req.body;
-  try {
-    const response = await userService.addFavouriteCar(Number(userId), vehicleId);
-    res.status(201).json(response);
-  } catch (error) {
-    if (error instanceof Error) {
-      res.status(400).json({ status: 'error', message: error.message });
-  } else {
-      console.error('Unexpected error:', error);
-      res.status(500).json({ status: 'error', message: 'Unexpected error occurred' });
-  }
-  }
-});
+// userRouter.post('/:userId/favourites', async (req: Request, res: Response) => {
+//   const { userId } = req.params;
+//   const { vehicleId } = req.body;
+//   try {
+//     const response = await userService.addFavouriteCar(Number(userId), vehicleId);
+//     res.status(201).json(response);
+//   } catch (error) {
+//     if (error instanceof Error) {
+//       res.status(400).json({ status: 'error', message: error.message });
+//   } else {
+//       console.error('Unexpected error:', error);
+//       res.status(500).json({ status: 'error', message: 'Unexpected error occurred' });
+//   }
+//   }
+// });
 
-userRouter.get('/:userId/favourites', async (req: Request, res: Response) => {
-  const { userId } = req.params;
-  try {
-    const favourites = await userService.getFavouriteCars(Number(userId));
-    res.status(200).json(favourites);
-  } catch (error) {
-    if (error instanceof Error) {
-      res.status(400).json({ status: 'error', message: error.message });
-  } else {
-      console.error('Unexpected error:', error);
-      res.status(500).json({ status: 'error', message: 'Unexpected error occurred' });
-  }
-  }
-});
+// userRouter.get('/:userId/favourites', async (req: Request, res: Response) => {
+//   const { userId } = req.params;
+//   try {
+//     const favourites = await userService.getFavouriteCars(Number(userId));
+//     res.status(200).json(favourites);
+//   } catch (error) {
+//     if (error instanceof Error) {
+//       res.status(400).json({ status: 'error', message: error.message });
+//   } else {
+//       console.error('Unexpected error:', error);
+//       res.status(500).json({ status: 'error', message: 'Unexpected error occurred' });
+//   }
+//   }
+// });
 
-userRouter.delete('/:userId/favourites', async (req: Request, res: Response) => {
-  const { userId } = req.params;
-  const { vehicleId } = req.body;
-  try {
-    const response = await userService.removeFavouriteCar(Number(userId), vehicleId);
-    res.status(200).json(response);
-  } catch (error) {
-    if (error instanceof Error) {
-      res.status(400).json({ status: 'error', message: error.message });
-  } else {
-      console.error('Unexpected error:', error);
-      res.status(500).json({ status: 'error', message: 'Unexpected error occurred' });
-  }
-  }
-});
+// userRouter.delete('/:userId/favourites', async (req: Request, res: Response) => {
+//   const { userId } = req.params;
+//   const { vehicleId } = req.body;
+//   try {
+//     const response = await userService.removeFavouriteCar(Number(userId), vehicleId);
+//     res.status(200).json(response);
+//   } catch (error) {
+//     if (error instanceof Error) {
+//       res.status(400).json({ status: 'error', message: error.message });
+//   } else {
+//       console.error('Unexpected error:', error);
+//       res.status(500).json({ status: 'error', message: 'Unexpected error occurred' });
+//   }
+//   }
+// });
 
 
 userRouter.get('/email/:email', async (req: Request, res: Response) => {

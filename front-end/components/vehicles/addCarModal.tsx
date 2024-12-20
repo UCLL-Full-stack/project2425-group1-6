@@ -147,7 +147,6 @@ const AddCarModal: React.FC<AddCarModalProps> = ({ isOpen, onClose, onAddCar }) 
         e.preventDefault();
 
         const newCar: Vehicle = {
-            id: 0,
             manufacturer,
             model_name: modelName,
             year: parseInt(year),

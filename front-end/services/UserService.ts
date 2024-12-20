@@ -29,7 +29,17 @@ const getUserByEmail = async (email: string) => {
     })
 }
 
+const getAllUsers = async () =>{
+    return await fetch(process.env.NEXT_PUBLIC_API_URL + '/users',{
+        method: 'GET',
+        headers:{
+            'Content-Type': 'application/json'
+        }
+    })
+}
+
 export const UserService = {
     getUserById,
-    getUserByEmail
+    getUserByEmail,
+    getAllUsers
 }

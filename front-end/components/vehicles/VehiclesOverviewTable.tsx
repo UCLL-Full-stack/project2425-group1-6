@@ -22,7 +22,11 @@ const VehiclesOverviewTable: React.FC<Props> = ({ vehicles, onVehiclesChange }: 
     };
 
     const handleDeleteCar = async (vehicle: Vehicle) => {
-        await VehicleService.deleteVehicle(vehicle.id);
+        if (vehicle.id !== undefined) {
+            await VehicleService.deleteVehicle(vehicle.id);
+        } else {
+            console.error("Vehicle ID is undefined");
+        }
         onVehiclesChange();
     };
 
@@ -33,7 +37,11 @@ const VehiclesOverviewTable: React.FC<Props> = ({ vehicles, onVehiclesChange }: 
 
     const handleEditCar = async (newVehicle: Vehicle) => {
         const oldVehicleId = newVehicle.id;
-        await VehicleService.editVehicle(oldVehicleId, newVehicle);
+        if (oldVehicleId !== undefined) {
+            await VehicleService.editVehicle(oldVehicleId, newVehicle);
+        } else {
+            console.error("Vehicle ID is undefined");
+        }
         onVehiclesChange();
     };
 

@@ -29,6 +29,8 @@ const Signup: React.FC = () => {
         };
         console.log(user);
         router.push("/vehicles")
+        sessionStorage.setItem('loggedInUser', email)
+
     };
 
     return (

@@ -3,6 +3,7 @@ import { Vehicle } from "../domain/model/vehicle";
 import database from "./database";
 import { VehicleInput } from "../types";
 import { ca } from "date-fns/locale";
+import { User } from "../domain/model/user";
 
 const prisma = new PrismaClient({
     log: ['query', 'info', 'warn', 'error'],
@@ -29,89 +30,86 @@ const getVehicleByID = async ({ id }: { id: number }): Promise<Vehicle | null> =
     }
 }
 
-const addVehicle = async ({
-    manufacturer,
-    model_name,
-    price,
-    fuelType,
-    transmissionType,
-    year,
-    vehicleType,
-    bodyType,
-    mileage,
-    engineCapacity,
-    createdAt,
-    updatedAt,
-    seller
-}: Vehicle) => {
+const addVehicle = async (input: Vehicle, seller: User) => {
     try {
+        // Ensure `seller.id` is valid before proceeding
+        if (!seller.id) {
+            throw new Error('Seller ID is undefined');
+        }
+
+        // Create the main vehicle record
         const vehiclesPrisma = await database.vehicle.create({
             data: {
-                manufacturer,
-                model_name,
-                price,
-                fuelType,
-                transmissionType,
-                year,
-                vehicleType,
-                bodyType,
-                mileage,
-                engineCapacity,
-                createdAt: createdAt ?? new Date(),
-                updatedAt: updatedAt ?? new Date(),
+                manufacturer: input.manufacturer,
+                model_name: input.model_name,
+                price: input.price,
+                fuelType: input.fuelType,
+                transmissionType: input.transmissionType,
+                year: input.year,
+                vehicleType: input.vehicleType,
+                bodyType: input.bodyType,
+                mileage: input.mileage,
+                engineCapacity: input.engineCapacity,
+                createdAt: input.createdAt ?? new Date(),
+                updatedAt: input.updatedAt ?? new Date(),
                 seller: {
-                    connect: { id: seller.id }
+                    connect: { id: seller.id } // Use seller.id
                 }
             }
-        })
-        if (vehicleType === 'Car') {
+        });
+
+        // Add vehicle-specific data (Car or Motorcycle)
+        if (input.vehicleType === 'Car') {
             await database.car.create({
                 data: {
-                    manufacturer,
-                    model_name,
-                    price,
-                    fuelType,
-                    transmissionType,
-                    year,
-                    vehicleType,
-                    bodyType,
-                    mileage,
-                    engineCapacity,
-                    createdAt: createdAt ?? new Date(),
-                    updatedAt: updatedAt ?? new Date(),
+                    manufacturer: input.manufacturer,
+                    model_name: input.model_name,
+                    price: input.price,
+                    fuelType: input.fuelType,
+                    transmissionType: input.transmissionType,
+                    year: input.year,
+                    vehicleType: input.vehicleType,
+                    bodyType: input.bodyType,
+                    mileage: input.mileage,
+                    engineCapacity: input.engineCapacity,
+                    createdAt: input.createdAt ?? new Date(),
+                    updatedAt: input.updatedAt ?? new Date(),
                     vehicle: {
                         connect: { id: vehiclesPrisma.id }
                     }
                 }
-            })
+            });
         } else {
             await database.motorcycle.create({
                 data: {
-                    manufacturer,
-                    model_name,
-                    price,
-                    fuelType,
-                    transmissionType,
-                    year,
-                    vehicleType,
-                    bodyType,
-                    mileage,
-                    engineCapacity,
-                    createdAt: createdAt ?? new Date(),
-                    updatedAt: updatedAt ?? new Date(),
-                    vehicle:{
+                    manufacturer: input.manufacturer,
+                    model_name: input.model_name,
+                    price: input.price,
+                    fuelType: input.fuelType,
+                    transmissionType: input.transmissionType,
+                    year: input.year,
+                    vehicleType: input.vehicleType,
+                    bodyType: input.bodyType,
+                    mileage: input.mileage,
+                    engineCapacity: input.engineCapacity,
+                    createdAt: input.createdAt ?? new Date(),
+                    updatedAt: input.updatedAt ?? new Date(),
+                    vehicle: {
                         connect: { id: vehiclesPrisma.id }
                     }
                 }
-            })
+            });
         }
+
         return vehiclesPrisma;
     } catch (error) {
         console.error(error);
         throw new Error('Database error. See server log for details.');
     }
-
 };
+
+
+
 
 const getVehicleBySeller = async ({ sellerId }: { sellerId: number }): Promise<Vehicle[] | null> => {
     try {

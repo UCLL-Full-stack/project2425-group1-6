@@ -53,9 +53,9 @@ vehicleRouter.get('/cars', async (req: Request, res: Response) => {
 
 vehicleRouter.post('/:sellerId', async (req: Request, res: Response) => {
     try{
-        const seller = userService.getUserById(Number(req.params.sellerId));
+        const sellerId = Number(req.params.sellerId);
         const vehicleData = { ...req.body };
-        const vehicle = await vehicleService.addVehicle(vehicleData);
+        const vehicle = await vehicleService.addVehicle(vehicleData, sellerId);
         res.status(200).json(vehicle);
     }catch(error){
 

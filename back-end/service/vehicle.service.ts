@@ -8,7 +8,7 @@ import vehicleDb from "../repository/vehicle.db";
 import userService from "./user.service";
 
 
-const addVehicle = async (input: Vehicle) => {
+const addVehicle = async (input: Vehicle, sellerId: number) => {
 
     if (!input.manufacturer ||
         !input.model_name ||
@@ -23,14 +23,15 @@ const addVehicle = async (input: Vehicle) => {
 
         throw new Error('All vehicle properties must be defined');
     }
-    const seller = await userService.getUserById(Number(input.seller.id));
+
+    const seller = await userService.getUserById(sellerId);
     
     
     if (!seller) {
         throw new Error('Seller does not exist');
     }
 
-    return await vehicleDB.addVehicle(input);
+    return await vehicleDB.addVehicle(input, seller);
 };
 
 
